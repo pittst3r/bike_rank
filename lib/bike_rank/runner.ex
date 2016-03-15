@@ -25,4 +25,8 @@ defmodule BikeRank.Runner do
     score = BikeRank.Facet.SpeedLimit.score(args)
     {:noreply, {:speed, args, {:score, score}}}
   end
+
+  def handle_cast({:run, args}, {state}) do
+    {:noreply, {state, args}}
+  end
 end

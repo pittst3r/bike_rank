@@ -1,15 +1,23 @@
-defmodule BikeRankTest do
-  use ExUnit.Case
-  doctest BikeRank.Runner
+defmodule BikeRank.RunnerTest do
+  use ExUnit.Case, async: true
 
-  test "computes score on arbitrary module" do
-    rando_facet_run = [BikeRank.Facet.CoolFacet, {:asdf, 30}]
-    assert BikeRank.Runner.run(rando_facet_run) == {:ok, 100}
+  setup do
+    {:ok, runner} = BikeRank.Runner.start_link(:foo)
+    {:ok, runner: runner}
+  end
+
+  test "it runs a facet score computation", %{runner: runner} do
+    assert BikeRank.Runner.run(runner, {:kph, 30}) == :ok
+  end
+
+  test "it gets a facet score that already exists", %{runner: runner} do
+    BikeRank.Runner.run(runner, {:kph, 30})
+    assert BikeRank.Runner.get(runner) == {:foo, {:kph, 30}}
   end
 end
 
-defmodule BikeRank.Facet.CoolFacet do
-  def score({:asdf, 30}) do
-    {:ok, 100}
+defmodule BikeRank.Runner.FooFacet do
+  def score(_) do
+    100
   end
 end
