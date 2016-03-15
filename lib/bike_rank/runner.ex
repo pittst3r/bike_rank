@@ -13,8 +13,8 @@ defmodule BikeRank.Runner do
     GenServer.call(pid, :get)
   end
 
-  def init(:speed) do
-    {:ok, {:speed}}
+  def init(facet_name) do
+    {:ok, {facet_name}}
   end
 
   def handle_call(:get, _from, state) do
@@ -23,6 +23,6 @@ defmodule BikeRank.Runner do
 
   def handle_cast({:run, args}, {:speed}) do
     score = BikeRank.Facet.SpeedLimit.score(args)
-    {:noreply, {:speed, score}}
+    {:noreply, {:speed, args, {:score, score}}}
   end
 end
