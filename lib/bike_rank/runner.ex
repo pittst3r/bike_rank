@@ -1,32 +1,28 @@
 defmodule BikeRank.Runner do
   use GenServer
 
-  def start_link(facet_name) do
-    GenServer.start_link(__MODULE__, facet_name)
+  def start_link(state) do
+    GenServer.start_link(__MODULE__, state)
   end
 
-  def run(pid, args) do
-    GenServer.cast(pid, {:run, args})
+  def run(pid) do
+    GenServer.cast(pid, :run)
   end
 
   def get(pid) do
     GenServer.call(pid, :get)
   end
 
-  def init(facet_name) do
-    {:ok, {facet_name}}
+  def init(state) do
+    {:ok, state}
   end
 
   def handle_call(:get, _from, state) do
     {:reply, state, state}
   end
 
-  def handle_cast({:run, args}, {:speed}) do
-    score = BikeRank.Facet.SpeedLimit.score(args)
-    {:noreply, {:speed, args, {:score, score}}}
-  end
-
-  def handle_cast({:run, args}, {state}) do
-    {:noreply, {state, args}}
+  def handle_cast(:run, [{name, mod}, params] = facet) do
+    score = mod.score(params)
+    {:noreply, [{:score, score}|facet]}
   end
 end

@@ -13,19 +13,33 @@ defmodule BikeRank do
   end
 
   def compute do
-    runners = spawn_runners([:speed], [])
+    facets = [
+      [speed: BikeRank.Facet.SpeedLimit, kph: 35]
+    ]
 
-    BikeRank.Runner.run(runners[:speed], {:kph, 30})
+    runners = spawn_runners(facets, [])
+
+    run_runners(runners)
 
     BikeRank.Runner.get(runners[:speed])
   end
 
   defp spawn_runners([facet|facets], runners) do
     {:ok, runner} = Supervisor.start_child(BikeRank.Supervisor, [facet])
-    spawn_runners(facets, [{facet, runner}|runners])
+    [{name, _mod}, _params] = facet
+    spawn_runners(facets, [{name, runner}|runners])
   end
 
   defp spawn_runners([], runners) do
     runners
+  end
+
+  defp run_runners([runner|runners]) do
+    {name, pid} = runner
+    BikeRank.Runner.run(pid)
+    run_runners(runners)
+  end
+
+  defp run_runners([]) do
   end
 end
