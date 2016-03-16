@@ -15,7 +15,7 @@ defmodule BikeRank.Facet.SpeedLimit do
     end
   end
 
-  def score({:mph, speed_limit}) do
+  def score(mph: speed_limit) do
     case speed_limit do
       s when s <= 20 -> 100
       s when s <= 25 -> 75

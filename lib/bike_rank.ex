@@ -39,7 +39,8 @@ defmodule BikeRank do
 
   defp spawn_runners([facet|facets], runners) do
     {:ok, runner} = Supervisor.start_child(BikeRank.Supervisor, [facet])
-    [{name, _mod}, _params] = facet
+
+    [{name, _mod}, params: _params] = facet
     spawn_runners(facets, [{name, runner}|runners])
   end
 

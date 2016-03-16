@@ -3,7 +3,7 @@ defmodule BikeRank.RunnerTest do
 
   setup do
     {:ok, facet} =
-      BikeRank.Runner.start_link(foo: BikeRank.Runner.FooFacet, kph: 30)
+      BikeRank.Runner.start_link(foo: BikeRank.Runner.FooFacet, params: [kph: 30])
     {:ok, facet: facet}
   end
 
@@ -14,7 +14,7 @@ defmodule BikeRank.RunnerTest do
   test "it gets a facet score that already exists", %{facet: facet} do
     BikeRank.Runner.run(facet)
     assert BikeRank.Runner.get(facet) ==
-      [score: 100, foo: BikeRank.Runner.FooFacet, kph: 30]
+      [score: 100, foo: BikeRank.Runner.FooFacet, params: [kph: 30]]
   end
 end
 

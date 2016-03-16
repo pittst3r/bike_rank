@@ -26,7 +26,7 @@ defmodule BikeRank.Runner do
     {:reply, state, state}
   end
 
-  def handle_cast(:run, [{name, mod}, params] = facet) do
+  def handle_cast(:run, [{name, mod}, params: params] = facet) do
     score = mod.score(params)
     {:noreply, [{:score, score}|facet]}
   end
