@@ -28,6 +28,9 @@ defmodule BikeRank.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:dialyxir, "~> 0.3", only: [:dev]},
+      {:credo, "~> 0.3", only: [:dev, :test]}
+    ]
   end
 end

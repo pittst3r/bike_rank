@@ -1,4 +1,9 @@
 defmodule BikeRank.Runner do
+  @moduledoc """
+  Runs facets and fetches their results. This should not be used directly but
+  through the supervision tree.
+  """
+
   use GenServer
 
   def start_link(state) do

@@ -1,5 +1,11 @@
 defmodule BikeRank.Facet.SpeedLimit do
-  def score({:kph, speed_limit}) do
+  @moduledoc """
+  Computes the facet's score given a certain speed limit.
+  """
+
+  @behaviour BikeRank.Facet
+
+  def score(kph: speed_limit) do
     case speed_limit do
       s when s <= 30 -> 100
       s when s <= 40 -> 75
